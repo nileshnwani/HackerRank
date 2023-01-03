@@ -1,0 +1,68 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+string ltrim(const string &);
+string rtrim(const string &);
+
+string isBalanced(string s) {
+    stack<char> brackets; 
+    for(char& c:s){ //for all the characters c - inside the string S 
+        if(c=='[' || c=='{' ||c=='(')
+            brackets.push(c);
+        else {
+            if (brackets.empty() || abs(brackets.top()-c)>2) 
+            return "NO"; //To check the ascii of the open brackets - the ascii of the closed brackets. If the value is >2 then they're different open and closed brackets. That means t is an imbalenced brackets 
+            else brackets.pop();
+            }
+        }
+    if(brackets.empty()) 
+        return "YES";
+    
+    return "NO"; //Stack is still !=empty()
+}
+    
+int main()
+{
+    ofstream fout(getenv("OUTPUT_PATH"));
+
+    string t_temp;
+    getline(cin, t_temp);
+
+    int t = stoi(ltrim(rtrim(t_temp)));
+
+    for (int t_itr = 0; t_itr < t; t_itr++) {
+        string s;
+        getline(cin, s);
+
+        string result = isBalanced(s);
+
+        fout << result << "\n";
+    }
+
+    fout.close();
+
+    return 0;
+}
+
+string ltrim(const string &str) {
+    string s(str);
+
+    s.erase(
+        s.begin(),
+        find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)))
+    );
+
+    return s;
+}
+
+string rtrim(const string &str) {
+    string s(str);
+
+    s.erase(
+        find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(),
+        s.end()
+    );
+
+    return s;
+}
